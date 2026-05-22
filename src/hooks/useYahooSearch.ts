@@ -19,10 +19,16 @@ export const useYahooSearch = (query: string) => {
     const run = async () => {
       setLoading(true);
       try {
+        const directYahoo = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=20&newsCount=0`;
+        const customProxy = import.meta.env.VITE_YAHOO_SEARCH_PROXY
+          ? `${import.meta.env.VITE_YAHOO_SEARCH_PROXY}${encodeURIComponent(directYahoo)}`
+          : null;
         const endpoints = [
-          `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=20&newsCount=0`,
-          `https://cors.isomorphic-git.org/https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=20&newsCount=0`,
-        ];
+          directYahoo,
+          customProxy,
+          `https://cors.isomorphic-git.org/${directYahoo}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(directYahoo)}`,
+        ].filter(Boolean) as string[];
         let quotes: SearchQuote[] = [];
         for (const url of endpoints) {
           try {
