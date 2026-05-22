@@ -12,6 +12,7 @@ export interface Transaction {
   id: string;
   ticker: string;
   type: AssetType;
+  currency: 'USD' | 'ARS';
   investedAmount: number;
   purchaseDate: string;
   purchasePrice: number;

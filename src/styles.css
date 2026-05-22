@@ -10,4 +10,9 @@
 label{display:grid;gap:6px;margin-bottom:10px;font-size:14px}input,select,button{font:inherit}input,select{background:#0f141b;color:var(--text);border:1px solid #2f3947;border-radius:10px;padding:10px}
 .btn{width:100%;padding:11px;border:none;border-radius:10px;background:var(--accent);color:white}.modal-title{display:flex;justify-content:space-between;align-items:center}.modal-title button{background:transparent;border:none;color:var(--text)}
 .pos{color:#61d39d}.neg{color:#ff7b72}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{background:#0f141b;border:1px solid #2f3947;color:var(--text);padding:8px 12px;border-radius:999px}
+.tab.active{background:var(--accent);border-color:var(--accent)}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.icon-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--accent);color:#fff;display:grid;place-items:center}
 @media(min-width:768px){.page{padding:24px}.stats-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{position:sticky;top:0;height:60px;padding:0 24px;justify-content:flex-start;gap:20px}}

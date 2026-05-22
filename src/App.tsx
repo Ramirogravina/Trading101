@@ -19,7 +19,7 @@ export const App = () => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route path="/" element={<DashboardPage holdings={holdings} />} />
-        <Route path="/portfolio" element={<PortfolioPage holdings={holdings} />} />
+        <Route path="/portfolio" element={<PortfolioPage holdings={holdings} onAddClick={() => setOpen(true)} />} />
         <Route path="/asset/:ticker" element={<AssetDetailPage holdings={holdings} />} />
         <Route path="/analytics" element={<AnalyticsPage holdings={holdings} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
