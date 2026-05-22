@@ -60,7 +60,7 @@ export const AddTransactionModal = ({ open, onClose, onAdd, initialTx }: Props) 
         setCurrency(isArs ? 'ARS' : 'USD');
       }}>{a.shortname} ({a.symbol})</button>)}
       {loading && <p className="muted">Buscando...</p>}
-      {!results.length && ticker.trim() && !loading && <p className="muted">Sin resultados. Si persiste, configurá `VITE_YAHOO_SEARCH_PROXY`.</p>}
+      {!results.length && ticker.trim() && !loading && <p className="muted">Sin resultados. Verificá conexión al endpoint de búsqueda Yahoo.</p>}
     </div>
     <label>Tipo de activo<select value={type} onChange={(e)=>setType(e.target.value as AssetType)}><option>CEDEAR</option><option>Bono</option><option>ETF</option><option>Acción USA</option></select></label>
     <label>Moneda<select value={currency} onChange={(e)=>setCurrency(e.target.value as 'USD' | 'ARS')}><option value="USD">USD</option><option value="ARS">ARS</option></select></label>

@@ -19,28 +19,12 @@ export const useYahooSearch = (query: string) => {
     const run = async () => {
       setLoading(true);
       try {
-        const directYahoo = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=20&newsCount=0`;
-        const customProxy = import.meta.env.VITE_YAHOO_SEARCH_PROXY
-          ? `${import.meta.env.VITE_YAHOO_SEARCH_PROXY}${encodeURIComponent(directYahoo)}`
-          : null;
-        const endpoints = [
-          directYahoo,
-          customProxy,
-          `https://cors.isomorphic-git.org/${directYahoo}`,
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(directYahoo)}`,
-        ].filter(Boolean) as string[];
-        let quotes: SearchQuote[] = [];
-        for (const url of endpoints) {
-          try {
-            const res = await fetch(url, { signal: ctrl.signal });
-            if (!res.ok) continue;
-            const data = await res.json();
-            quotes = (data?.quotes ?? []).filter((q: SearchQuote) => q.symbol && q.shortname);
-            if (quotes.length) break;
-          } catch {
-            // try next endpoint
-          }
-        }
+        const endpoint = import.meta.env.VITE_YAHOO_SEARCH_PROXY || '/api/yahoo-search';
+        const sep = endpoint.includes('?') ? '&' : '?';
+        const res = await fetch(`${endpoint}${sep}q=${encodeURIComponent(query)}&quotesCount=20`, { signal: ctrl.signal });
+        if (!res.ok) throw new Error('Search error');
+        const data = await res.json();
+        const quotes: SearchQuote[] = (data?.quotes ?? []).filter((q: SearchQuote) => q.symbol && q.shortname);
         setResults(quotes.slice(0, 20));
       } catch {
         setResults([]);
