@@ -10,4 +10,11 @@
 label{display:grid;gap:6px;margin-bottom:10px;font-size:14px}input,select,button{font:inherit}input,select{background:#0f141b;color:var(--text);border:1px solid #2f3947;border-radius:10px;padding:10px}
 .btn{width:100%;padding:11px;border:none;border-radius:10px;background:var(--accent);color:white}.modal-title{display:flex;justify-content:space-between;align-items:center}.modal-title button{background:transparent;border:none;color:var(--text)}
 .pos{color:#61d39d}.neg{color:#ff7b72}
+.dashboard-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.switch-wrap{display:grid;gap:6px;justify-items:end}
+.switch{display:flex;background:#0f141b;border:1px solid #2f3947;border-radius:999px;padding:2px}
+.switch button{border:none;background:transparent;color:var(--muted);padding:4px 10px;border-radius:999px}
+.switch button.active{background:var(--accent);color:white}
+.suggestions{display:grid;gap:6px;margin-top:8px}.suggestion{border:1px solid #2f3947;background:#0f141b;color:var(--text);text-align:left;padding:8px;border-radius:8px}
+.tx{display:flex;justify-content:space-between;align-items:center}.tx-actions{display:flex;gap:6px}.tx-actions button{border:1px solid #2f3947;background:#0f141b;color:var(--text);border-radius:8px;padding:6px;display:grid;place-items:center}
 @media(min-width:768px){.page{padding:24px}.stats-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{position:sticky;top:0;height:60px;padding:0 24px;justify-content:flex-start;gap:20px}}

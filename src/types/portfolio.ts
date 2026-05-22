@@ -13,8 +13,10 @@ export interface Transaction {
   ticker: string;
   type: AssetType;
   investedAmount: number;
+  investedCurrency: 'USD' | 'ARS';
   purchaseDate: string;
   purchasePrice: number;
+  purchaseCurrency: 'USD' | 'ARS';
   currentPriceOverride?: number;
 }
 

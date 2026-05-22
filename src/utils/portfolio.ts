@@ -1,9 +1,12 @@
 import { mockAssets } from '../data/mockAssets';
 import { Holding, Transaction } from '../types/portfolio';
 
-export const calculateShares = (investedAmount: number, purchasePrice: number): number => investedAmount / purchasePrice;
+export const calculateShares = (investedAmount: number, purchasePrice: number): number => {
+  if (!Number.isFinite(investedAmount) || !Number.isFinite(purchasePrice) || purchasePrice <= 0) return 0;
+  return investedAmount / purchasePrice;
+};
 
-export const calculateHoldings = (transactions: Transaction[]): Holding[] => {
+export const calculateHoldings = (transactions: Transaction[], liveQuotes: Record<string, number>, mepUsd: number): Holding[] => {
   const grouped = new Map<string, Transaction[]>();
   transactions.forEach((tx) => {
     const arr = grouped.get(tx.ticker) ?? [];
@@ -13,12 +16,17 @@ export const calculateHoldings = (transactions: Transaction[]): Holding[] => {
 
   const raw = Array.from(grouped.entries()).map(([ticker, txs]) => {
     const investedAmount = txs.reduce((sum, tx) => sum + tx.investedAmount, 0);
-    const shares = txs.reduce((sum, tx) => sum + calculateShares(tx.investedAmount, tx.purchasePrice), 0);
-    const avgCost = investedAmount / shares;
+    const shares = txs.reduce((sum, tx) => {
+      const investedUsd = tx.investedCurrency === 'ARS' ? tx.investedAmount / mepUsd : tx.investedAmount;
+      const purchaseUsd = tx.purchaseCurrency === 'ARS' ? tx.purchasePrice / mepUsd : tx.purchasePrice;
+      return sum + calculateShares(investedUsd, purchaseUsd);
+    }, 0);
+    const avgCost = shares > 0 ? investedAmount / shares : 0;
     const fallbackAsset = mockAssets.find((a) => a.ticker === ticker);
     const lastOverride = [...txs].reverse().find((tx) => tx.currentPriceOverride)?.currentPriceOverride;
-    const currentPrice = lastOverride ?? fallbackAsset?.currentPrice ?? avgCost;
-    const currentValue = shares * currentPrice;
+    const currentPrice = lastOverride ?? liveQuotes[ticker] ?? fallbackAsset?.currentPrice ?? avgCost;
+    const priceCurrency = fallbackAsset?.currency ?? 'USD';
+    const currentValue = shares * currentPrice * (priceCurrency === 'ARS' ? 1 : mepUsd);
     const pnl = currentValue - investedAmount;
     const returnPct = investedAmount > 0 ? (pnl / investedAmount) * 100 : 0;
 
