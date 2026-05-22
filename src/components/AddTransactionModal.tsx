@@ -45,14 +45,22 @@ export const AddTransactionModal = ({ open, onClose, onAdd, initialTx }: Props) 
 
   return <div className="backdrop"><div className="modal"><form onSubmit={submit}>
     <div className="modal-title"><h3>{initialTx ? 'Edit transaction' : 'Add transaction'}</h3><button type="button" onClick={onClose}><X size={18}/></button></div>
-    <label>Ticker<input value={ticker} onChange={(e)=>setTicker(e.target.value)} required/></label>
+    <label>Ticker<input value={ticker} onChange={(e)=>setTicker(e.target.value)} onKeyDown={(e) => {
+      if (e.key === 'Enter' && results.length) {
+        e.preventDefault();
+        const first = results[0];
+        setTicker(first.symbol);
+        setCurrency(first.symbol.endsWith('.BA') ? 'ARS' : 'USD');
+      }
+    }} required/></label>
     <div className="suggestions">
       {results.map((a) => <button type="button" key={a.symbol} className="suggestion-item" onClick={() => {
         setTicker(a.symbol);
         const isArs = a.symbol.endsWith('.BA');
         setCurrency(isArs ? 'ARS' : 'USD');
       }}>{a.shortname} ({a.symbol})</button>)}
-      {!results.length && ticker.trim() && !loading && <p>Sin resultados.</p>}
+      {loading && <p className="muted">Buscando...</p>}
+      {!results.length && ticker.trim() && !loading && <p className="muted">Sin resultados.</p>}
     </div>
     <label>Tipo de activo<select value={type} onChange={(e)=>setType(e.target.value as AssetType)}><option>CEDEAR</option><option>Bono</option><option>ETF</option><option>Acción USA</option></select></label>
     <label>Moneda<select value={currency} onChange={(e)=>setCurrency(e.target.value as 'USD' | 'ARS')}><option value="USD">USD</option><option value="ARS">ARS</option></select></label>
