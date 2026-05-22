@@ -12,6 +12,7 @@ export interface Transaction {
   id: string;
   ticker: string;
   type: AssetType;
+  currency: 'USD' | 'ARS';
   investedAmount: number;
   purchaseDate: string;
   purchasePrice: number;
@@ -29,4 +30,10 @@ export interface Holding {
   pnl: number;
   returnPct: number;
   allocationPct: number;
+}
+
+export interface WatchlistItem {
+  symbol: string;
+  name: string;
+  exchange?: string;
 }

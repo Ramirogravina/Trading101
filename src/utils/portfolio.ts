@@ -4,6 +4,10 @@ import { Holding, Transaction } from '../types/portfolio';
 export const calculateShares = (investedAmount: number, purchasePrice: number): number => investedAmount / purchasePrice;
 
 export const calculateHoldings = (transactions: Transaction[]): Holding[] => {
+  return calculateHoldingsWithPrices(transactions, {});
+};
+
+export const calculateHoldingsWithPrices = (transactions: Transaction[], livePrices: Record<string, number>): Holding[] => {
   const grouped = new Map<string, Transaction[]>();
   transactions.forEach((tx) => {
     const arr = grouped.get(tx.ticker) ?? [];
@@ -17,7 +21,7 @@ export const calculateHoldings = (transactions: Transaction[]): Holding[] => {
     const avgCost = investedAmount / shares;
     const fallbackAsset = mockAssets.find((a) => a.ticker === ticker);
     const lastOverride = [...txs].reverse().find((tx) => tx.currentPriceOverride)?.currentPriceOverride;
-    const currentPrice = lastOverride ?? fallbackAsset?.currentPrice ?? avgCost;
+    const currentPrice = lastOverride ?? livePrices[ticker] ?? fallbackAsset?.currentPrice ?? avgCost;
     const currentValue = shares * currentPrice;
     const pnl = currentValue - investedAmount;
     const returnPct = investedAmount > 0 ? (pnl / investedAmount) * 100 : 0;
