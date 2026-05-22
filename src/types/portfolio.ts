@@ -31,3 +31,9 @@ export interface Holding {
   returnPct: number;
   allocationPct: number;
 }
+
+export interface WatchlistItem {
+  symbol: string;
+  name: string;
+  exchange?: string;
+}
