@@ -18,6 +18,7 @@ export const AnalyticsPage = ({
     <div className="section-title"><h2>Market Watchlist</h2></div>
     <label>Buscar activo<input placeholder="Ej: Microsoft, Tesla, AL30..." value={query} onChange={(e) => setQuery(e.target.value)} /></label>
     <div className="suggestions">{results.map((r) => <button key={r.symbol} type="button" className="suggestion-item" onClick={() => onAddWatch({ symbol: r.symbol, name: r.shortname, exchange: r.exchange })}><Plus size={14} /> {r.shortname} ({r.symbol})</button>)}</div>
+    {!watchlist.length && <p className="muted">Watchlist vacía. Buscá activos arriba y agregalos con +.</p>}
     <div className="list">{watchlist.map((w) => {
       const px = getLivePrice(w.symbol.replace('.BA', ''), 0);
       const day = dayChangePct[w.symbol.replace('.BA', '')] ?? 0;

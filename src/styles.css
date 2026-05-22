@@ -22,4 +22,5 @@ label{display:grid;gap:6px;margin-bottom:10px;font-size:14px}input,select,button
 .tx-actions button{background:#0f141b;border:1px solid #2f3947;color:var(--text);padding:6px 8px;border-radius:8px}
 .suggestions{display:grid;gap:4px;margin-bottom:10px}
 .suggestion-item{text-align:left;background:#0f141b;border:1px solid #2f3947;color:var(--text);padding:8px;border-radius:8px;display:flex;align-items:center;gap:6px}
+.muted{color:var(--muted)}
 @media(min-width:768px){.page{padding:24px}.stats-grid{grid-template-columns:repeat(4,1fr)}.bottom-nav{position:sticky;top:0;height:60px;padding:0 24px;justify-content:flex-start;gap:20px}}
