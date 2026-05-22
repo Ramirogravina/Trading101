@@ -29,7 +29,9 @@ export const useMarketData = (transactions: Transaction[], extraSymbols: string[
           const [ticker, currency] = key.split(':') as [string, 'USD' | 'ARS'];
           return getYahooSymbol(ticker, currency);
         }).join(',');
-        const res = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(yahooSymbols)}`);
+        const endpoint = import.meta.env.VITE_YAHOO_QUOTE_PROXY || '/api/yahoo-quote';
+        const sep = endpoint.includes('?') ? '&' : '?';
+        const res = await fetch(`${endpoint}${sep}symbols=${encodeURIComponent(yahooSymbols)}`);
         const data = await res.json();
         const next: QuoteMap = {};
         const nextDay: DayPnlMap = {};
